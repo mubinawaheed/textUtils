@@ -24,6 +24,7 @@ export default function Textform(props) {
         var text= document.getElementById('box')
         text.select();
         navigator.clipboard.writeText(text.value)
+        document.getSelection().removeAllRanges()
         props.showAlert('Copied to clipboard', 'sucess')
     }
     return (
@@ -35,16 +36,17 @@ export default function Textform(props) {
                     <textarea className="form-control" id="box" placeholder='Enter Text' value={text} onChange={HaandleOnchange} rows="7">
                     </textarea>
                 </div>
-                <button className="btn btn-primary mx-2" onClick={handleupclick}>To upper case</button>
-                <button className="btn btn-primary mx-2" onClick={handlelowclick}>To lower case</button>
-                <button className="btn btn-primary mx-2" onClick={handleClearClick}>Clear Text</button>
-                <button className="btn btn-primary mx-2" onClick={handleCopy}>Copy Text</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-3" onClick={handleupclick}>To upper case</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-3" onClick={handlelowclick}>To lower case</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-3" onClick={handleClearClick}>Clear Text</button>
+                <button disabled={text.length===0} className="btn btn-primary mx-2 my-3" onClick={handleCopy}>Copy Text</button>
 
             </div>
             <hr className='mb-3'/>
             <div className="container my-3">
                 <h3>Your Text Summary</h3>
-                <p> <b>{(text.split(" ")).length} </b> words and <b>{text.length}</b>  Characters</p>
+                <p> <b>{(text.split(/\s+/).filter((element)=>{
+                    return element.length!==0})).length} </b> words and <b>{text.length}</b>  Characters</p>
 
                 <p>{0.008*(text.split(" ")).length} Minutes to read</p>
 
